@@ -1,0 +1,19 @@
+# Generate with xcodegen generate --spec project-store.yml.
+include:
+  - project.yml
+name: OboloStore
+
+targets:
+  Obolo:
+    configFiles:
+      Release: Configuration/Distribution.xcconfig
+
+schemes:
+  Obolo App Store:
+    build:
+      targets:
+        Obolo: all
+    run:
+      config: Release
+    archive:
+      config: Release

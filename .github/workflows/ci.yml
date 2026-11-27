@@ -37,3 +37,41 @@ jobs:
 
       - name: Test the Mac app
         run: xcodebuild -project Obolo.xcodeproj -scheme Obolo -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test
+
+  distribution:
+    name: Archive ${{ matrix.scheme }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - spec: project-direct.yml
+            project: OboloDirect
+            scheme: Obolo Direct
+          - spec: project-store.yml
+            project: OboloStore
+            scheme: Obolo App Store
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Generate the distribution project
+        run: |
+          brew install xcodegen
+          xcodegen generate --spec '${{ matrix.spec }}'
+
+      - name: Archive without signing credentials
+        run: |
+          xcodebuild -project '${{ matrix.project }}.xcodeproj' -scheme '${{ matrix.scheme }}' \
+            -destination 'generic/platform=macOS' -archivePath "$RUNNER_TEMP/Obolo.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO archive
+
+      - name: Verify the archived app
+        run: |
+          app="$RUNNER_TEMP/Obolo.xcarchive/Products/Applications/Obolo.app"
+          info="$app/Contents/Info.plist"
+          settings=$(xcodegen dump --type json | jq -e '.targets.Obolo.settings.base')
+          test "$(plutil -extract CFBundleIdentifier raw -o - "$info")" = "$(jq -er .PRODUCT_BUNDLE_IDENTIFIER <<< "$settings")"
+          test "$(plutil -extract CFBundleShortVersionString raw -o - "$info")" = "$(jq -er .MARKETING_VERSION <<< "$settings")"
+          test "$(plutil -extract CFBundleVersion raw -o - "$info")" = "$(jq -er .CURRENT_PROJECT_VERSION <<< "$settings")"
+          lipo "$app/Contents/MacOS/Obolo" -verify_arch arm64
+          lipo "$app/Contents/MacOS/Obolo" -verify_arch x86_64

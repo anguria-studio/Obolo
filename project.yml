@@ -51,6 +51,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: studio.anguria.obolo
         PRODUCT_NAME: Obolo
+        # Both distribution specs inherit these values. Increment the build for each new candidate.
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
         SWIFT_VERSION: "6.0"

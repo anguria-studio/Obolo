@@ -1,0 +1,3 @@
+// Build both distribution editions for Apple silicon and Intel.
+ARCHS = arm64 x86_64
+ONLY_ACTIVE_ARCH = NO

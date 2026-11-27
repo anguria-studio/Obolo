@@ -31,7 +31,7 @@ The menu bar can show your monthly total or your next payment. In Shortcuts, use
 
 ## Try Obolo
 
-Obolo is in development for **macOS 15 Sequoia or later**. You can build it from source using the instructions below.
+Obolo is in development for **macOS 15 Sequoia or later**. You can build it from source using the instructions below and follow upcoming changes in the [changelog](CHANGELOG.md).
 
 To explore an example, drop the [sample CSV](design/fixtures/sample.csv) onto the Obolo window. Review the rows in the import preview before adding them. In **Home**, select **Subscriptions** and click a name to see its renewal date and price history.
 
@@ -68,7 +68,7 @@ xcodebuild -project Obolo.xcodeproj -scheme Obolo \
   -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test
 ```
 
-The [Swift package](Core/Sources/OboloCore) contains the billing calculations, renewal schedule, importers and shared subscription editor model. The [Mac app](App) contains the SwiftUI views and macOS integrations. The [CI workflow](.github/workflows/ci.yml) runs both suites on macOS 15 and 26 and builds the package for the iOS simulator.
+The [Swift package](Core/Sources/OboloCore) contains the billing calculations, renewal schedule, importers and shared subscription editor model. The [Mac app](App) contains the SwiftUI views and macOS integrations. The [CI workflow](.github/workflows/ci.yml) runs both suites on macOS 15 and 26, builds the package for the iOS simulator, and archives both distribution editions without signing.
 
 <details>
 <summary>Maintainer commands</summary>
@@ -85,7 +85,7 @@ If you change the CSV export format, regenerate the sample and review its diff.
 (cd Core && OBOLO_REGENERATE_FIXTURES=1 swift test --filter sampleFixtureIsCurrent)
 ```
 
-To package a signed development build, run these scripts in order.
+To package a signed development build, run these scripts in order. See the [distribution guide](docs/distribution.md) for Developer ID and Mac App Store archives.
 
 ```sh
 scripts/build-release.sh
