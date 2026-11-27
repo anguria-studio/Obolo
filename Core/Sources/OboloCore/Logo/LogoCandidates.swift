@@ -29,19 +29,6 @@ public enum LogoCandidates {
         ].compactMap(URL.init(string:))
     }
 
-    /// Google's icon service — the last resort, and the only candidate that tells
-    /// somebody else what the user is subscribed to. Nothing but the domain is sent, and
-    /// `Settings.useGoogleFaviconFallback` can turn it off.
-    public static func googleFaviconURL(domain: String, size: Int = 128) -> URL? {
-        guard let host = Subscription.normalizedDomain(domain) else { return nil }
-        var components = URLComponents(string: "https://www.google.com/s2/favicons")
-        components?.queryItems = [
-            URLQueryItem(name: "domain", value: host),
-            URLQueryItem(name: "sz", value: String(max(16, size)))
-        ]
-        return components?.url
-    }
-
     // MARK: - The page's own tags
 
     /// One `<link rel="…icon…">` from a page.

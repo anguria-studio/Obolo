@@ -77,12 +77,15 @@ jobs:
           lipo "$app/Contents/MacOS/Obolo" -verify_arch arm64
           lipo "$app/Contents/MacOS/Obolo" -verify_arch x86_64
 
-      - name: Verify the updater for this edition
+      - name: Verify the updater and logo fallback for this edition
         run: |
           app="$RUNNER_TEMP/Obolo.xcarchive/Products/Applications/Obolo.app"
           framework="$app/Contents/Frameworks/Sparkle.framework"
           otool -L "$app/Contents/MacOS/Obolo" > "$RUNNER_TEMP/linked-libraries"
+          strings -a "$app/Contents/MacOS/Obolo" > "$RUNNER_TEMP/app-strings"
           if [[ '${{ matrix.project }}' == OboloDirect ]]; then
+            grep -Fq "www.google.com/s2/favicons" "$RUNNER_TEMP/app-strings"
+            grep -Fq "Look up missing logos with Google" "$RUNNER_TEMP/app-strings"
             grep -F 'Sparkle.framework/' "$RUNNER_TEMP/linked-libraries"
             test -x "$framework/Versions/Current/XPCServices/Installer.xpc/Contents/MacOS/Installer"
             cmp licenses/Sparkle.txt "$app/Contents/Resources/Sparkle.txt"
@@ -91,12 +94,23 @@ jobs:
             test "$(plutil -extract SUEnableAutomaticChecks raw "$app/Contents/Info.plist")" = true
             test "$(plutil -extract SUAllowsAutomaticUpdates raw "$app/Contents/Info.plist")" = false
           else
+            if grep -Fq -e "www.google.com/s2/favicons" -e "Look up missing logos with Google" "$RUNNER_TEMP/app-strings"; then
+              echo "Unexpected Google logo fallback in the Mac App Store archive" >&2
+              exit 1
+            fi
             test ! -e "$framework"
             if grep -F 'Sparkle.framework/' "$RUNNER_TEMP/linked-libraries" || plutil -extract SUFeedURL raw "$app/Contents/Info.plist"; then
               echo "Unexpected updater in the Mac App Store archive" >&2
               exit 1
             fi
           fi
+
+      - name: Test website and fallback requests in the direct edition
+        if: matrix.project == 'OboloDirect'
+        run: |
+          xcodebuild -project OboloDirect.xcodeproj -scheme 'Obolo Direct' \
+            -destination 'platform=macOS' -clonedSourcePackagesDirPath "$RUNNER_TEMP/packages" \
+            -only-testing:OboloTests/WebsiteLogoRequestTests CODE_SIGNING_ALLOWED=NO test
 
       - name: Test signing and verifying a disposable update
         if: matrix.project == 'OboloDirect'

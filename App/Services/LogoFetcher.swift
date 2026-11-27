@@ -8,29 +8,12 @@ protocol LogoFetching: Sendable {
     func fetchDarkVersion(domain: String) async -> Data?
 }
 
-/// One of the two places in Obolo that open a network connection — the other is
-/// `RateService`, which asks for exchange rates.
+/// Fetches a subscription website's home page, its declared icon URLs (which may
+/// point to another host), and conventional icon paths. The direct-download edition
+/// can also ask Google for a missing or small icon.
 ///
-/// It runs only when the user asks — "Fetch logo" in the form, "Fetch missing logos" in
-/// the menu and the Data pane, or the toggle on the import sheet — and it asks for
-/// exactly one kind of thing: a site's own icon. There is no telemetry, no update check
-/// and no background pass. A logo the user fetched on another Mac arrives through
-/// iCloud without its dark version, and this Mac asks the same site for that alone
-/// (`AppModel.logoDidArrive`).
-///
-/// The strategy, in order, because a site's own answer is always better than a guess:
-///
-/// 1. `GET https://<domain>/` and read its `<link rel="…icon…">` tags. This is what
-///    finds a retailer's 180-pixel icon on a Demandware CDN and a Webflow site's
-///    256-pixel web clip on Webflow — neither of which lives at a well-known path.
-/// 2. The three well-known paths, for sites that serve an icon but no tag.
-/// 3. Google's icon service, if the user has left that switch on — for the sites that
-///    refuse the first request outright. some Cloudflare-fronted sites do: Cloudflare answers a plain
-///    `URLSession` with nothing usable, however browser-like the headers.
-///
-/// Every response is verified as an image before it counts, so a 200-with-an-HTML-error
-/// page — which is what a surprising number of sites return for a missing favicon —
-/// cannot become somebody's logo.
+/// Saving a form, importing subscriptions or manually fetching logos can start a
+/// lookup. Existing and newly synced logos can also trigger a dark-icon lookup.
 actor LogoFetcher: LogoFetching {
 
     /// Big enough for the largest place a logo is drawn: the Detail header's 52-point
@@ -40,13 +23,6 @@ actor LogoFetcher: LogoFetching {
     /// the size target while a later site link provides a cleaner mark.
     private static let goodEnough = 120
     private static let fullSize = 104
-
-    /// Below this the site's answer is worth having but worth *checking Google against*
-    /// as well, because Google often holds a larger copy of the very same mark:
-    /// some sites publish only a 48-pixel `favicon.ico`, and Google has
-    /// it at 128. The larger of the two wins, so the site can only be improved on, never
-    /// overruled.
-    private static let smallEnoughToSecondGuess = 64
 
     /// A page can be any size; only the `<head>` is of interest and it is always near
     /// the front.
@@ -63,8 +39,7 @@ actor LogoFetcher: LogoFetching {
 
     private let session: URLSession
 
-    init() {
-        let configuration = URLSessionConfiguration.ephemeral
+    init(configuration: URLSessionConfiguration = .ephemeral) {
         configuration.timeoutIntervalForRequest = 8
         configuration.timeoutIntervalForResource = 20
         // Nothing is stored between requests: no cookies going out, none kept, no cache
@@ -166,15 +141,15 @@ actor LogoFetcher: LogoFetching {
             if consider(data) { return best?.data }
         }
 
-        // The site said nothing, or said something small enough that Google is likely to
-        // hold a better copy of the same mark. Either way the larger one wins.
-        let siteSide = best?.side ?? 0
+        #if OBOLO_DIRECT
+        // Google's 128-pixel copy can improve on a missing or small site icon.
         if allowGoogleFallback,
-           siteSide < Self.smallEnoughToSecondGuess,
-           let url = LogoCandidates.googleFaviconURL(domain: host),
+           (best?.side ?? 0) < 64,
+           let url = URL(string: "https://www.google.com/s2/favicons?domain=\(host)&sz=128"),
            let data = await iconData(from: url) {
             _ = consider(data)
         }
+        #endif
 
         return best?.data
     }

@@ -40,11 +40,13 @@ struct GeneralPane: View {
                     .prefButton()
                     .disabled(model.isFetchingLogos || model.missingLogoCount == 0)
             }
+            #if OBOLO_DIRECT
             PrefToggleRow(
                 "Look up missing logos with Google",
                 "If a website’s icon is missing or too small, Obolo sends its domain to Google to look for a better copy.",
                 isOn: $settings.useGoogleFaviconFallback
             )
+            #endif
         } footer: {
             if let logoMessage { PrefFootnote(logoMessage) }
         }

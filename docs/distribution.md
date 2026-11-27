@@ -10,6 +10,8 @@ Run the commands below from the repository root. Archiving uses the team's Apple
 
 ## Direct download
 
+Use the **Obolo Direct** scheme to test Google’s optional icon fallback. The default project and the Mac App Store scheme use website icons alone.
+
 The direct edition checks GitHub for a signed Sparkle feed. Automatic checks start enabled and users confirm each installation. **Settings → Updates** has the switch and a **Check Now** button. The feed address is `https://github.com/anguria-studio/Obolo/releases/latest/download/appcast.xml`. Each feed points to the versioned DMG in its release.
 
 The release Mac needs the app's development and Developer ID signing identities and profiles, a `notarytool` Keychain profile, and the existing Sparkle signing key under the Keychain account `studio.anguria.obolo`. Keep an encrypted backup of that signing key before the first public release. The public half is in [the direct project](../project-direct.yml).

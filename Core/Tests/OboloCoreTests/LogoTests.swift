@@ -53,7 +53,7 @@ struct LogoTests {
     ])
     func rejectsMalformedAddresses(_ address: String) {
         #expect(Subscription.normalizedDomain(address) == nil)
-        #expect(LogoCandidates.googleFaviconURL(domain: address) == nil)
+        #expect(LogoCandidates.urls(forDomain: address).isEmpty)
     }
 
     @Test("Assigning a website normalises it, in the initialiser and afterwards")
@@ -86,11 +86,11 @@ struct LogoTests {
         #expect(subscription.effectiveDomain == "nordvpn.com")
     }
 
-    @Test("A saved management link supplies only its host to the Google fallback", arguments: [
+    @Test("A saved management link supplies only its host to website icon lookups", arguments: [
         "https://service.example/account?email=alice@elsewhere.example",
         "service.example/account?email=alice@elsewhere.example&redirect=https://elsewhere.example"
     ])
-    func managementLinkSuppliesGoogleLookupHost(_ address: String) throws {
+    func managementLinkSuppliesWebsiteLookupHost(_ address: String) throws {
         var draft = SubscriptionDraft(Fixed.subscription("Example"), isNew: false)
         draft.manageURLText = address
         let subscription = try #require(draft.subscription())
@@ -98,8 +98,8 @@ struct LogoTests {
 
         #expect(subscription.manageURL?.query()?.contains("email=alice@elsewhere.example") == true)
         #expect(domain == "service.example")
-        #expect(LogoCandidates.googleFaviconURL(domain: domain)?.absoluteString
-            == "https://www.google.com/s2/favicons?domain=service.example&sz=128")
+        #expect(LogoCandidates.urls(forDomain: domain).first?.absoluteString
+            == "https://service.example/apple-touch-icon.png")
     }
 
     // MARK: - The icon case
@@ -213,15 +213,6 @@ struct LogoTests {
         #expect(LogoCandidates.urls(forDomain: "https://www.Netflix.com/browse").first?.absoluteString
             == "https://netflix.com/apple-touch-icon.png")
         #expect(LogoCandidates.urls(forDomain: "not a domain").isEmpty)
-    }
-
-    @Test("The Google fallback sends the domain and a size and nothing else")
-    func googleFallbackURL() {
-        #expect(LogoCandidates.googleFaviconURL(domain: "spotify.com")?.absoluteString
-            == "https://www.google.com/s2/favicons?domain=spotify.com&sz=128")
-        #expect(LogoCandidates.googleFaviconURL(domain: "https://www.notion.so/", size: 64)?.absoluteString
-            == "https://www.google.com/s2/favicons?domain=notion.so&sz=64")
-        #expect(LogoCandidates.googleFaviconURL(domain: "nonsense") == nil)
     }
 
     // MARK: - Reading a page
