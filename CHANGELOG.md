@@ -2,9 +2,11 @@
 
 ## Unreleased
 
-- Ignore paths, queries and fragments when reading hostnames for logo lookups.
-- Fetch logos from subscription websites in the Mac App Store edition. Direct downloads also offer the optional Google lookup.
-- Open the privacy policy from the Help menu.
+## [1.0.1](https://github.com/anguria-studio/Obolo/releases/tag/v1.0.1) — 2026-11-27
+
+- Fixed a logo lookup that could contact the wrong website when a pasted billing link contained an email address.
+- Added **Help → Privacy Policy** so you can read how Obolo handles your data.
+- The Mac App Store build fetches icons from subscription websites. The optional Google logo fallback is available in direct downloads.
 
 ## [1.0.0](https://github.com/anguria-studio/Obolo/releases/tag/v1.0.0) — 2026-11-27
 
