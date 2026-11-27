@@ -1,6 +1,9 @@
 import AppKit
 import Observation
 import OboloCore
+#if OBOLO_DIRECT
+import Sparkle
+#endif
 
 /// The menu bar item: the glyph, and per Settings › General › "Menu bar shows" the
 /// monthly total ("129 €") or the next payment ("Spotify · today") beside it.
@@ -99,6 +102,13 @@ final class StatusItemController: NSObject {
         let settings = menu.addItem(withTitle: "Settings", action: #selector(openSettings), keyEquivalent: ",")
         settings.keyEquivalentModifierMask = .command
         settings.target = self
+        #if OBOLO_DIRECT
+        menu.addItem(
+            withTitle: "Check for Updates…",
+            action: #selector(SPUStandardUpdaterController.checkForUpdates(_:)),
+            keyEquivalent: ""
+        ).target = DirectUpdates.shared.controller
+        #endif
         menu.addItem(.separator())
         let quit = menu.addItem(withTitle: "Quit Obolo", action: #selector(quit), keyEquivalent: "q")
         quit.keyEquivalentModifierMask = .command

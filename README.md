@@ -45,6 +45,7 @@ Obolo saves your library on your Mac. It requires no Obolo account and collects 
 | Service logos | Obolo checks the subscription’s website for an icon. If its icon is missing or too small, the Google fallback sends Google the domain. You can turn the fallback off in Settings. |
 | Exchange rates | Automatic updates send currency codes to Frankfurter. You can also enter rates by hand. |
 | Export and backup | Export a CSV for a spreadsheet. A JSON backup includes subscriptions, categories, rates and settings. Logo images live separately. |
+| App updates | The direct-download edition checks GitHub for new versions automatically and asks before installing. In Settings → Updates, you can turn automatic checks off or choose **Check Now**. The Mac App Store handles updates for its edition. |
 
 ## Development
 
@@ -96,4 +97,4 @@ scripts/make-dmg.sh
 
 ## License
 
-Obolo uses the [MIT License](LICENSE). The bundled Geist and Geist Mono fonts have their own [SIL Open Font License](App/Resources/Fonts/Geist-OFL.txt).
+Obolo uses the [MIT License](LICENSE). The bundled Geist and Geist Mono fonts have their own [SIL Open Font License](App/Resources/Fonts/Geist-OFL.txt). The direct-download edition includes [Sparkle and its notices](licenses/Sparkle.txt).

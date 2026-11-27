@@ -63,6 +63,7 @@ jobs:
         run: |
           xcodebuild -project '${{ matrix.project }}.xcodeproj' -scheme '${{ matrix.scheme }}' \
             -destination 'generic/platform=macOS' -archivePath "$RUNNER_TEMP/Obolo.xcarchive" \
+            -clonedSourcePackagesDirPath "$RUNNER_TEMP/packages" \
             CODE_SIGNING_ALLOWED=NO archive
 
       - name: Verify the archived app
@@ -75,3 +76,28 @@ jobs:
           test "$(plutil -extract CFBundleVersion raw -o - "$info")" = "$(jq -er .CURRENT_PROJECT_VERSION <<< "$settings")"
           lipo "$app/Contents/MacOS/Obolo" -verify_arch arm64
           lipo "$app/Contents/MacOS/Obolo" -verify_arch x86_64
+
+      - name: Verify the updater for this edition
+        run: |
+          app="$RUNNER_TEMP/Obolo.xcarchive/Products/Applications/Obolo.app"
+          framework="$app/Contents/Frameworks/Sparkle.framework"
+          otool -L "$app/Contents/MacOS/Obolo" > "$RUNNER_TEMP/linked-libraries"
+          if [[ '${{ matrix.project }}' == OboloDirect ]]; then
+            grep -F 'Sparkle.framework/' "$RUNNER_TEMP/linked-libraries"
+            test -x "$framework/Versions/Current/XPCServices/Installer.xpc/Contents/MacOS/Installer"
+            cmp licenses/Sparkle.txt "$app/Contents/Resources/Sparkle.txt"
+            test "$(plutil -extract SURequireSignedFeed raw "$app/Contents/Info.plist")" = true
+            test "$(plutil -extract SUVerifyUpdateBeforeExtraction raw "$app/Contents/Info.plist")" = true
+            test "$(plutil -extract SUEnableAutomaticChecks raw "$app/Contents/Info.plist")" = true
+            test "$(plutil -extract SUAllowsAutomaticUpdates raw "$app/Contents/Info.plist")" = false
+          else
+            test ! -e "$framework"
+            if grep -F 'Sparkle.framework/' "$RUNNER_TEMP/linked-libraries" || plutil -extract SUFeedURL raw "$app/Contents/Info.plist"; then
+              echo "Unexpected updater in the Mac App Store archive" >&2
+              exit 1
+            fi
+          fi
+
+      - name: Test signing and verifying a disposable update
+        if: matrix.project == 'OboloDirect'
+        run: python3 scripts/test_direct_release.py "$RUNNER_TEMP/packages"

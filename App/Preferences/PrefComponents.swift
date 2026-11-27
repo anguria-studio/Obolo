@@ -442,8 +442,8 @@ struct RowIconButtonStyle: ButtonStyle {
 
 // MARK: - Tab bar
 
-/// General · Reminders · Categories · Currencies · Data, as 80 × 48 tiles: an 18pt line
-/// icon over a mono 9 label. The selected one `ink` on a `bg300` tile with a `line`
+/// Settings tabs as 80 × 48 tiles: an 18pt line icon over a mono 9 label.
+/// The selected one `ink` on a `bg300` tile with a `line`
 /// border; the others `inkMuted`, `ink` on hover.
 struct PrefTabBar: View {
     @Binding var selection: PreferencesTab
@@ -545,6 +545,12 @@ struct PrefTabIcon: View {
             poly([(4, 9), (20, 9), (20, 15), (4, 15)], closed: true)
             poly([(4, 9), (7, 4.5), (17, 4.5), (20, 9)], closed: false)
             poly([(16, 12), (17, 12)], closed: false)
+        #if OBOLO_DIRECT
+        case .updates:
+            path.addArc(center: CGPoint(x: 12, y: 12), radius: 7,
+                        startAngle: .degrees(5), endAngle: .degrees(315), clockwise: false)
+            poly([(17, 2.5), (17, 7), (12.5, 7)], closed: false)
+        #endif
         }
         return path
     }
@@ -558,6 +564,9 @@ extension PreferencesTab {
         case .categories: "Categories"
         case .currencies: "Currencies"
         case .data: "Data"
+        #if OBOLO_DIRECT
+        case .updates: "Updates"
+        #endif
         }
     }
 }
