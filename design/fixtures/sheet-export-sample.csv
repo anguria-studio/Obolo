@@ -1,0 +1,11 @@
+Name,Category,Cost,Currency,Billing cycle,A payment date (past or future),Active,Payment method,Notes,Website
+Spotify Premium,Music,10.99,USD,Monthly,2026-08-25,Yes,PayPal,"Billed in USD",spotify.com
+Adobe Creative Cloud,Software,65.49,EUR,Monthly,,Yes,Credit card,"Renewal day unknown. Add the date.",adobe.com
+Netflix,Streaming,13.99,EUR,Monthly,2026-08-24,Yes,Credit card,,netflix.com
+Dropbox Plus,Cloud storage,11.99,EUR,Monthly,2026-09-17,Yes,Credit card,,dropbox.com
+Notion Plus,Software,96.00,EUR,Yearly,2027-07-19,Yes,Credit card,"Check that auto-renew is on.",notion.so
+1Password Families,Security & VPN,59.88,EUR,Yearly,2027-01-02,Yes,Card ••1234,"Price before tax.",1password.com
+NordVPN,Security & VPN,89,EUR,Every 2 years,2028-08-31,Yes,,"Estimate. Replace it with the real amount from the account page.",nordvpn.com
+Headspace,Fitness & health,57.99,EUR,Yearly,2027-01-17,Yes,Apple ID,"Promo rate. Check the renewal price.",headspace.com
+Duolingo Super,Other,83.99,EUR,Yearly,2027-01-30,Yes,Apple ID,,duolingo.com
+Disney+,Streaming,,EUR,Monthly,2026-09-05,No,Apple ID,"Cancelled. Access expires 5 Sep 2026.",

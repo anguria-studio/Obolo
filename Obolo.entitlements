@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- The document and icon files live in the App Group container. -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.studio.anguria.obolo</string>
+	</array>
+	<key>com.apple.developer.aps-environment</key>
+	<string>development</string>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>iCloud.studio.anguria.obolo</string>
+	</array>
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudKit</string>
+	</array>
+
+	<!-- CalendarSync writes one recurring event per subscription. -->
+	<key>com.apple.security.personal-information.calendars</key>
+	<true/>
+
+	<!-- CSV import/export and the backup/restore panels. Read-write because
+	     Export CSV and Back up… write to wherever the user picks. -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+
+	<!-- Two things, and nothing else. Logos: only when the user asks for one, from
+	     the service's own site or from Google's icon service if that fallback is
+	     left on. Exchange rates: the ECB's daily reference rates from
+	     api.frankfurter.dev, at most once a day, for the currency codes this
+	     document actually uses and nothing more. Both can be switched off. There
+	     is no update check and no telemetry. -->
+	<key>com.apple.security.network.client</key>
+	<true/>
+</dict>
+</plist>

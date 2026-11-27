@@ -1,0 +1,38 @@
+name: Build and test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [macos-15, macos-26]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Select Xcode 26 on macOS 15
+        if: matrix.os == 'macos-15'
+        run: sudo xcode-select --switch /Applications/Xcode_26.2.app/Contents/Developer
+
+      - name: Test Core
+        run: swift test --package-path Core
+
+      - name: Build Core for the iOS simulator
+        if: matrix.os == 'macos-26'
+        working-directory: Core
+        run: xcodebuild -scheme OboloCore -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+
+      - name: Generate the Mac project
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Test the Mac app
+        run: xcodebuild -project Obolo.xcodeproj -scheme Obolo -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test

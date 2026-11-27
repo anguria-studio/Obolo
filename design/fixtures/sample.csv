@@ -1,0 +1,12 @@
+ID,Name,Category,Price,Currency,Price history,Current price since,Billing cycle,First payment,Status,Active,Billing stopped on,Ends on,Is estimate,Reminder lead days,Payment method,Manage URL,Website,Tint,Icon,Notes,Created at
+50000000-0000-4000-B000-000000000001,Netflix,Streaming,13.99,EUR,,,monthly,2025-02-24,active,Yes,,,No,,Credit card,,netflix.com,red,initial,,2025-02-27T23:00:00Z
+50000000-0000-4000-B000-000000000002,Spotify Premium,Music,10.99,USD,,,monthly,2025-03-25,active,Yes,,,No,,PayPal,,spotify.com,green,initial,"Billed in USD, converted at the stored rate.",2025-03-29T23:00:00Z
+50000000-0000-4000-B000-000000000003,Adobe Creative Cloud,Software,65.49,EUR,,,monthly,,active,Yes,,,No,,Credit card,,adobe.com,orange,initial,Renewal day unknown. Add the date.,2026-04-23T22:00:00Z
+50000000-0000-4000-B000-000000000004,Dropbox Plus,Cloud storage,11.99,EUR,,,monthly,2024-09-17,active,Yes,,,No,,Credit card,,dropbox.com,accent,initial,,2024-09-20T22:00:00Z
+50000000-0000-4000-B000-000000000005,Duolingo Super,Other,83.99,EUR,,,yearly,2023-11-04,active,Yes,,,No,,Apple ID,,duolingo.com,green,initial,,2024-03-04T23:00:00Z
+50000000-0000-4000-B000-000000000006,1Password Families,Security & VPN,59.88,EUR,,,yearly,2024-01-02,active,Yes,,,No,7,Card ••1234,,1password.com,purple,initial,59.88 before tax; about €73 with 22% VAT at checkout,2024-06-12T22:00:00Z
+50000000-0000-4000-B000-000000000007,Headspace,Fitness & health,57.99,EUR,,,yearly,2024-01-17,active,Yes,,,No,,Apple ID,,headspace.com,orange,initial,,2024-06-22T22:00:00Z
+50000000-0000-4000-B000-000000000008,Notion Plus,Software,96.00,EUR,,,yearly,2024-03-09,active,Yes,,,No,,Credit card,,notion.so,teal,initial,,2024-07-22T22:00:00Z
+50000000-0000-4000-B000-000000000009,NordVPN,Security & VPN,89.00,EUR,,,every2Years,2028-08-31,active,Yes,,,Yes,,,,nordvpn.com,accent,initial,Estimate. Replace it with the real amount from the account page.,2026-06-22T22:00:00Z
+50000000-0000-4000-B000-000000000010,Disney+,Streaming,8.99,EUR,,,monthly,2026-03-05,cancelled,No,2026-08-01,2026-09-05,No,,Apple ID,,disneyplus.com,cyan,initial,Cancelled. Access expires 5 Sep 2026.,2026-03-04T23:00:00Z
+50000000-0000-4000-B000-000000000011,Audible,Music,9.95,EUR,,,monthly,2026-05-12,cancelled,No,2026-08-01,2026-08-01,No,,Credit card,,audible.com,yellow,initial,Cancelled. Access ended 1 Aug 2026.,2025-10-25T22:00:00Z

@@ -1,0 +1,62 @@
+{
+  "fill": {
+    "linear-gradient": [
+      "extended-srgb:0.19000,0.19000,0.19000,1.00000",
+      "extended-srgb:0.05500,0.05500,0.05500,1.00000"
+    ],
+    "orientation": {
+      "start": {
+        "x": 0.5,
+        "y": 0
+      },
+      "stop": {
+        "x": 0.5,
+        "y": 1
+      }
+    }
+  },
+  "groups": [
+    {
+      "blur-material": 0.2,
+      "layers": [
+        {
+          "glass": true,
+          "image-name": "3-top-orange.svg",
+          "name": "3-top-orange",
+          "image-name-specializations": [
+            {
+              "appearance": "tinted",
+              "value": "3-top-orange-mono.svg"
+            }
+          ]
+        },
+        {
+          "glass": true,
+          "image-name": "2-middle-grey.svg",
+          "name": "2-middle-grey",
+          "image-name-specializations": [
+            {
+              "appearance": "tinted",
+              "value": "2-middle-grey-mono.svg"
+            }
+          ]
+        },
+        {
+          "glass": true,
+          "image-name": "1-base-grey.svg",
+          "name": "1-base-grey",
+          "image-name-specializations": [
+            {
+              "appearance": "tinted",
+              "value": "1-base-grey-mono.svg"
+            }
+          ]
+        }
+      ],
+      "name": "Slabs"
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}

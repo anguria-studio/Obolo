@@ -1,0 +1,116 @@
+name: Obolo
+
+# The .xcodeproj is generated from this file — never hand-edited. Regenerate with:
+#   xcodegen generate
+options:
+  bundleIdPrefix: studio.anguria
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+packages:
+  OboloCore:
+    path: Core
+
+targets:
+  Obolo:
+    type: application
+    platform: macOS
+    # `App/Info.plist` is generated from the properties below, and it is tracked because
+    # the target reads it as a file.
+    #
+    # `LSUIElement: false` is deliberate and has to stay false. Obolo hides and shows
+    # its Dock icon at runtime, through `NSApplication.activationPolicy` in `AppDelegate`:
+    # a login launch starts in `.accessory` with only the menu bar item, and opening a
+    # window promotes the app to `.regular`. Declaring `LSUIElement` true in the plist
+    # makes that promotion impossible — the process is an agent for its whole life — so
+    # the Dock icon would never come back.
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSApplicationCategoryType: public.app-category.finance
+        LSUIElement: false
+        NSHumanReadableCopyright: ""
+        NSCalendarsFullAccessUsageDescription: "Obolo adds a calendar event for each subscription payment. You then see the payments in your calendar."
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: studio.anguria.obolo.intent
+            CFBundleURLSchemes:
+              - studio.anguria.obolo
+    sources:
+      - path: App
+      - path: Shared
+    dependencies:
+      - package: OboloCore
+        product: OboloCore
+      - sdk: CloudKit.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: studio.anguria.obolo
+        PRODUCT_NAME: Obolo
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+
+        # Obolo reads its JSON file in the App Group container, plus any file selected
+        # in an open panel.
+        ENABLE_APP_SANDBOX: YES
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: Obolo.entitlements
+
+        # A real Apple Development identity keeps the team and bundle identity stable
+        # across rebuilds. Calendar and Notification grants therefore survive.
+        # Automatic signing also keeps the app's profile in step with its registered
+        # capabilities.
+        CODE_SIGN_IDENTITY: "Apple Development"
+        DEVELOPMENT_TEAM: L2P2KC4C69
+        CODE_SIGN_STYLE: Automatic
+
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # The instrument accent, #f2703a: switches, checkboxes, selection and focus.
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS: YES
+
+  OboloTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      # Compile the application code without its entry point. This keeps the tests
+      # hostless, so they cannot open a window or load the live application container.
+      - path: App
+        excludes:
+          - OboloApp.swift
+          - Info.plist
+          - Resources/AppIcon.icon
+      - path: AppTests
+      - path: Shared
+    dependencies:
+      - package: OboloCore
+        product: OboloCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: studio.anguria.obolo.tests
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: ""
+        BUNDLE_LOADER: ""
+        ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS: YES
+
+schemes:
+  Obolo:
+    build:
+      targets:
+        Obolo: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - OboloTests
+    archive:
+      config: Release
