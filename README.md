@@ -5,7 +5,7 @@
 <h1 align="center">Obolo</h1>
 
 <p align="center">
-  A subscription tracker for macOS.<br>
+  A simple subscription tracker for macOS. With cool charts.<br>
   See what you spend each month and which payment comes next.
 </p>
 
