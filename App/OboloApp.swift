@@ -122,6 +122,12 @@ struct OboloApp: App {
     private var commands: some Commands {
         SearchCommands()
 
+        CommandGroup(after: .help) {
+            Button("Privacy Policy") {
+                NSWorkspace.shared.open(URL(string: "https://github.com/anguria-studio/Obolo/blob/main/docs/privacy.md")!)
+            }
+        }
+
         #if OBOLO_DIRECT
         CommandGroup(after: .appInfo) {
             CheckForUpdatesButton()

@@ -43,12 +43,12 @@ To explore an example, drop the [sample CSV](design/fixtures/sample.csv) onto th
 
 ## Your data
 
-Obolo saves your library on your Mac. It requires no Obolo account and collects no telemetry.
+Obolo saves your library on your Mac. It requires no Obolo account and collects no telemetry. See the [privacy policy](docs/privacy.md) for what leaves your Mac and how to manage your data.
 
 | Feature | How it uses your data |
 | --- | --- |
-| iCloud sync | Turn it on to sync subscriptions, categories, manual exchange rates and custom logos between Macs through your private iCloud database. |
-| Service logos | Obolo checks the subscription’s website for an icon. If its icon is missing or too small, the Google fallback sends Google the domain. You can turn the fallback off in Settings. |
+| iCloud sync | Opt in to sync subscriptions, categories, manual exchange rates, subscription logo images and selected settings through your private iCloud database. Turning off sync keeps both copies. |
+| Service logos | Obolo can contact a subscription’s website and its icon hosts. Only the direct-download edition offers a Google fallback for missing or small icons. You can turn it off in Settings. |
 | Exchange rates | Automatic updates send currency codes to Frankfurter. You can also enter rates by hand. |
 | Export and backup | Export a CSV for a spreadsheet. A JSON backup includes subscriptions, categories, rates and settings. Logo images live separately. |
 | App updates | The direct-download edition checks GitHub for new versions automatically and asks before installing. In Settings → Updates, you can turn automatic checks off or choose **Check Now**. The Mac App Store handles updates for its edition. |

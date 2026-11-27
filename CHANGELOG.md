@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Ignore paths, queries and fragments when reading hostnames for logo lookups.
+- Fetch logos from subscription websites in the Mac App Store edition. Direct downloads also offer the optional Google lookup.
+- Open the privacy policy from the Help menu.
+
 ## [1.0.0](https://github.com/anguria-studio/Obolo/releases/tag/v1.0.0) — 2026-11-27
 
 - Track subscriptions, upcoming renewals, and price history.

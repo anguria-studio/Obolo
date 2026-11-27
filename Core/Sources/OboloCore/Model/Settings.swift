@@ -119,14 +119,8 @@ public struct Settings: Codable, Hashable, Sendable {
     public var hasCompletedFirstRun: Bool
     /// Which of the two drawings the Spend card shows.
     public var spendView: SpendView
-    /// Whether a logo fetch may fall back to Google's icon service when the site itself
-    /// serves nothing usable.
-    ///
-    /// On by default because without it roughly a third of a typical list stays on
-    /// letters — a fair number of sites refuse the request that would find their own
-    /// icon. It is a switch rather than a fact because it is the one thing in this app
-    /// that tells a third party anything: the domain being looked up, and only when the
-    /// user asked for a fetch.
+    /// The direct-download edition may ask Google for a missing or small website icon.
+    /// The Store edition preserves this preference in backups and ignores it for lookups.
     public var useGoogleFaviconFallback: Bool
 
     /// Whether Obolo may fetch the ECB's daily reference rates for the currencies

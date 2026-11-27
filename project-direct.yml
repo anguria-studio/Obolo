@@ -37,6 +37,15 @@ targets:
     configFiles:
       Release: Configuration/Distribution.xcconfig
 
+  # The hostless tests compile the app sources, so they need the same edition flag and updater.
+  OboloTests:
+    dependencies:
+      - package: Sparkle
+        product: Sparkle
+    settings:
+      base:
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) OBOLO_DIRECT"
+
 schemes:
   Obolo Direct:
     build:
@@ -44,5 +53,9 @@ schemes:
         Obolo: all
     run:
       config: Release
+    test:
+      config: Debug
+      targets:
+        - OboloTests
     archive:
       config: Release
