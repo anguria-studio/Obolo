@@ -5,12 +5,20 @@
 <h1 align="center">Obolo</h1>
 
 <p align="center">
-  A subscription tracker for macOS.<br>
+  A simple subscription tracker for macOS. With cool charts.<br>
   See what you spend each month and which payment comes next.
 </p>
 
 <p align="center">
   <a href="#try-obolo">Try Obolo</a> · <a href="#your-data">Your data</a> · <a href="#development">Development</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/anguria-studio/Obolo/releases/latest"><img src="https://img.shields.io/github/v/release/anguria-studio/Obolo?label=release&amp;color=8a5fa8&amp;style=flat" alt="Latest Obolo release"></a>
+  <a href="https://github.com/anguria-studio/Obolo/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/anguria-studio/Obolo/ci.yml?branch=main&amp;label=CI&amp;style=flat" alt="CI status on main"></a>
+  <a href="https://github.com/anguria-studio/Obolo/releases/latest"><img src="https://img.shields.io/badge/Apple-notarized-black?style=flat&amp;logo=apple" alt="Apple-notarized direct download"></a>
+  <a href="#try-obolo"><img src="https://img.shields.io/badge/macOS-15%2B%20Apple%20silicon%20or%20Intel-black?style=flat" alt="macOS 15 or later on Apple silicon or Intel"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-8a5fa8?style=flat" alt="MIT license"></a>
 </p>
 
 <p align="center">
@@ -100,6 +108,10 @@ scripts/make-dmg.sh
 ```
 
 </details>
+
+## Credits
+
+Obolo’s design draws heavily on the work of **Maxim Kuznetsov**. [@disarto_max on X](https://x.com/disarto_max)
 
 ## License
 
