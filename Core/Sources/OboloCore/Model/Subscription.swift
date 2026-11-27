@@ -229,23 +229,44 @@ public struct Subscription: Identifiable, Codable, Hashable, Sendable {
     /// rather than a URL that cannot resolve.
     public static func normalizedDomain(_ text: String?) -> String? {
         guard let text else { return nil }
-        var domain = text.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        guard !domain.isEmpty else { return nil }
-
-        if let range = domain.range(of: "://") { domain = String(domain[range.upperBound...]) }
-        // Credentials, if a pasted URL carried any.
-        if let at = domain.lastIndex(of: "@") { domain = String(domain[domain.index(after: at)...]) }
-        if let separator = domain.firstIndex(where: { $0 == "/" || $0 == "?" || $0 == "#" }) {
-            domain = String(domain[..<separator])
+        let input = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let authorityStart: String.Index
+        let prefix: String
+        if input.hasPrefix("//") {
+            authorityStart = input.index(input.startIndex, offsetBy: 2)
+            prefix = "https://"
+        } else if let separator = input.firstIndex(where: { ":/?#".contains($0) }),
+                  input[separator...].hasPrefix("://") {
+            authorityStart = input.index(separator, offsetBy: 3)
+            prefix = String(input[..<authorityStart])
+        } else {
+            authorityStart = input.startIndex
+            prefix = "https://"
         }
-        if let colon = domain.firstIndex(of: ":") { domain = String(domain[..<colon]) }
-        while domain.hasPrefix("www.") { domain = String(domain.dropFirst(4)) }
-        while domain.hasSuffix(".") { domain = String(domain.dropLast()) }
 
-        guard domain.contains("."),
-              !domain.contains(where: \.isWhitespace),
-              domain.allSatisfy({ $0.isLetter || $0.isNumber || $0 == "." || $0 == "-" })
+        // Only authority text can supply a host. Bare addresses cannot include
+        // credentials because an email address or an opaque URL can look the same.
+        let authority = input[authorityStart...].prefix { !"/?#".contains($0) }
+        let authorityParts = authority.split(separator: "@", omittingEmptySubsequences: false)
+        guard authorityParts.count == 1 || (authorityParts.count == 2 && authorityStart != input.startIndex),
+              !authority.contains(where: \.isWhitespace),
+              !authority.contains("\\"),
+              authority.last != ":",
+              authorityParts.last?.contains("%") == false,
+              let components = URLComponents(string: prefix + authority),
+              components.rangeOfPort == nil || UInt16(exactly: components.port ?? -1) != nil,
+              let host = components.host
         else { return nil }
+
+        var domain = host.lowercased()
+        while domain.hasPrefix("www.") { domain = String(domain.dropFirst(4)) }
+        if domain.hasSuffix(".") { domain.removeLast() }
+
+        let labels = domain.split(separator: ".", omittingEmptySubsequences: false)
+        guard labels.count > 1, labels.allSatisfy({ label in
+            !label.isEmpty && label.first != "-" && label.last != "-"
+                && label.allSatisfy { $0.isLetter || $0.isNumber || $0 == "-" }
+        }) else { return nil }
         return domain
     }
 

@@ -27,6 +27,35 @@ struct LogoTests {
         #expect(Subscription.normalizedDomain(nil) == nil)
     }
 
+    @Test("Only the URL authority can supply a logo host", arguments: [
+        "https://user:pass@www.service.example:8443/account/alice@elsewhere.example",
+        "https://service.example/account?email=alice@elsewhere.example",
+        "service.example?redirect=https://elsewhere.example",
+        "//www.service.example:8443/#https://elsewhere.example",
+        "service.example:8443?email=alice@elsewhere.example"
+    ])
+    func onlyAuthoritySuppliesHost(_ address: String) {
+        #expect(Subscription.normalizedDomain(address) == "service.example")
+    }
+
+    @Test("Malformed and hostless addresses do not suggest a logo destination", arguments: [
+        "/path/alice@elsewhere.example",
+        "?redirect=https://elsewhere.example",
+        "https:///elsewhere.example",
+        "mailto:alice@elsewhere.example",
+        "alice@elsewhere.example",
+        "https://user@@elsewhere.example",
+        "service.example:invalid",
+        "service.example:99999",
+        "service.example:18446744073709551616",
+        "service..example",
+        ".service.example"
+    ])
+    func rejectsMalformedAddresses(_ address: String) {
+        #expect(Subscription.normalizedDomain(address) == nil)
+        #expect(LogoCandidates.googleFaviconURL(domain: address) == nil)
+    }
+
     @Test("Assigning a website normalises it, in the initialiser and afterwards")
     func websiteIsNormalisedOnEveryWrite() {
         var subscription = Fixed.subscription("Netflix")
@@ -55,6 +84,22 @@ struct LogoTests {
         // An explicit website always wins over one derived from a link.
         subscription.website = "nordvpn.com"
         #expect(subscription.effectiveDomain == "nordvpn.com")
+    }
+
+    @Test("A saved management link supplies only its host to the Google fallback", arguments: [
+        "https://service.example/account?email=alice@elsewhere.example",
+        "service.example/account?email=alice@elsewhere.example&redirect=https://elsewhere.example"
+    ])
+    func managementLinkSuppliesGoogleLookupHost(_ address: String) throws {
+        var draft = SubscriptionDraft(Fixed.subscription("Example"), isNew: false)
+        draft.manageURLText = address
+        let subscription = try #require(draft.subscription())
+        let domain = try #require(subscription.effectiveDomain)
+
+        #expect(subscription.manageURL?.query()?.contains("email=alice@elsewhere.example") == true)
+        #expect(domain == "service.example")
+        #expect(LogoCandidates.googleFaviconURL(domain: domain)?.absoluteString
+            == "https://www.google.com/s2/favicons?domain=service.example&sz=128")
     }
 
     // MARK: - The icon case

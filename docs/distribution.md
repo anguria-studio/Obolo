@@ -39,4 +39,6 @@ xcodebuild -exportArchive -archivePath build/OboloStore.xcarchive \
 
 The export writes a local package for App Store Connect and keeps the build number from `project.yml`.
 
+Use the [Mac App Store privacy guide](app-store-privacy.md) to verify the build's data flows and fill out App Privacy.
+
 For an unsigned archive, generate the appropriate project with XcodeGen and run `xcodebuild archive` with `CODE_SIGNING_ALLOWED=NO`. The [CI workflow](../.github/workflows/ci.yml) shows both commands.
