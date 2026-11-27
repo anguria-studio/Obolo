@@ -12,13 +12,14 @@ jobs:
   verify:
     strategy:
       matrix:
-        os: [macos-15, macos-26]
+        # The hosted Sequoia ARM runner intermittently crashes while compiling AppIcon.icon.
+        os: [macos-15-intel, macos-26]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
 
       - name: Select Xcode 26.3 on macOS 15
-        if: matrix.os == 'macos-15'
+        if: matrix.os == 'macos-15-intel'
         run: sudo xcode-select --switch /Applications/Xcode_26.3.app/Contents/Developer
 
       - name: Test Core
