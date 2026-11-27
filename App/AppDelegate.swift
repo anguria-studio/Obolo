@@ -41,6 +41,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         } else {
             MainWindowPresenter.activateAfterLaunch()
         }
+        #if OBOLO_DIRECT
+        DirectUpdates.shared.controller.startUpdater()
+        #endif
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

@@ -122,6 +122,12 @@ struct OboloApp: App {
     private var commands: some Commands {
         SearchCommands()
 
+        #if OBOLO_DIRECT
+        CommandGroup(after: .appInfo) {
+            CheckForUpdatesButton()
+        }
+        #endif
+
         CommandGroup(replacing: .newItem) {
             Button("New Subscription") { model.presentAdd() }
                 .keyboardShortcut("n")

@@ -3,8 +3,37 @@ include:
   - project.yml
 name: OboloDirect
 
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: "2.10.1"
+
 targets:
   Obolo:
+    info:
+      path: build/DirectInfo.plist
+      properties:
+        SUFeedURL: https://github.com/anguria-studio/Obolo/releases/latest/download/appcast.xml
+        SUPublicEDKey: /ctnpetn3q1R/obY/TRPvOfFGY+MMMf6u5CMP20G7Z8=
+        SUEnableInstallerLauncherService: true
+        SUVerifyUpdateBeforeExtraction: true
+        SURequireSignedFeed: true
+        SUSignedFeedFailureExpirationInterval: 0
+        SUEnableAutomaticChecks: true
+        SUAutomaticallyUpdate: false
+        SUAllowsAutomaticUpdates: false
+        SUEnableSystemProfiling: false
+        SUSendProfileInfo: false
+    sources:
+      - path: licenses/Sparkle.txt
+        buildPhase: resources
+    dependencies:
+      - package: Sparkle
+        product: Sparkle
+    settings:
+      base:
+        CODE_SIGN_ENTITLEMENTS: Configuration/Direct.entitlements
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) OBOLO_DIRECT"
     configFiles:
       Release: Configuration/Distribution.xcconfig
 

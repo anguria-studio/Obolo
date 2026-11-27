@@ -3,7 +3,7 @@ import Observation
 import SwiftUI
 import OboloCore
 
-/// The preferences window: five tabs behind ⌘,.
+/// The preferences window behind ⌘,.
 ///
 /// The Settings scene places the tab row below the window controls. Each pane uses
 /// `PrefComponents` for its cards and native controls for editing.
@@ -65,6 +65,9 @@ struct PreferencesView: View {
         case .categories: CategoriesPane(model: model)
         case .currencies: CurrenciesPane(model: model)
         case .data: DataPane(model: model)
+        #if OBOLO_DIRECT
+        case .updates: UpdatesPane()
+        #endif
         }
     }
 }
@@ -186,6 +189,9 @@ enum PreferencesTab: String, Hashable, CaseIterable {
     case categories
     case currencies
     case data
+    #if OBOLO_DIRECT
+    case updates
+    #endif
 }
 
 /// The one piece of state the Settings window shares with the rest of the app.
