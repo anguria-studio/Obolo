@@ -109,6 +109,10 @@ scripts/make-dmg.sh
 
 </details>
 
+## Credits
+
+Obolo’s design draws heavily on the work of **Maxim Kuznetsov**. [@disarto_max on X](https://x.com/disarto_max)
+
 ## License
 
 Obolo uses the [MIT License](LICENSE). The bundled Geist and Geist Mono fonts have their own [SIL Open Font License](App/Resources/Fonts/Geist-OFL.txt). The direct-download edition includes [Sparkle and its notices](licenses/Sparkle.txt).
