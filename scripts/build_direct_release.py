@@ -242,7 +242,7 @@ def developer_identity(team):
 def verify_developer_signature(path, team):
     requirement = (f'anchor apple generic and certificate leaf[subject.OU] = "{team}" and '
                    'certificate leaf[field.1.2.840.113635.100.6.1.13] exists')
-    run('codesign', '--verify', '--strict', '-R', requirement, path)
+    run('codesign', '--verify', '--strict', '-R', '=' + requirement, path)
 
 
 def verify_app(app, version, build, minimum_os, team, public_key):
@@ -332,8 +332,9 @@ def build_release(output, profile, version, build, minimum_os, team, public_key,
         run(*xcode, '-configuration', 'Release', '-destination', 'generic/platform=macOS',
             '-onlyUsePackageVersionsFromResolvedFile', '-derivedDataPath', work / 'DerivedData',
             '-archivePath', archive, 'archive', cwd=source)
-        run('xcodebuild', '-exportArchive', '-archivePath', archive, '-exportPath', exported,
-            '-exportOptionsPlist', 'Configuration/ExportOptionsDirect.plist', cwd=source)
+        run('xcodebuild', '-exportArchive', '-allowProvisioningUpdates', '-archivePath', archive,
+            '-exportPath', exported, '-exportOptionsPlist', 'Configuration/ExportOptionsDirect.plist',
+            cwd=source)
         app = exported / 'Obolo.app'
         verify_app(app, version, build, minimum_os, team, public_key)
         app_zip = work / 'Obolo.zip'
