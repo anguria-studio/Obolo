@@ -1,0 +1,19 @@
+# Generate with xcodegen generate --spec project-direct.yml.
+include:
+  - project.yml
+name: OboloDirect
+
+targets:
+  Obolo:
+    configFiles:
+      Release: Configuration/Distribution.xcconfig
+
+schemes:
+  Obolo Direct:
+    build:
+      targets:
+        Obolo: all
+    run:
+      config: Release
+    archive:
+      config: Release
