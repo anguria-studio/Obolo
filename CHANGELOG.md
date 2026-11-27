@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [1.0.0](https://github.com/anguria-studio/Obolo/releases/tag/v1.0.0) — 2026-11-27
 
 - Track subscriptions, upcoming renewals, and price history.
 - Compare spending by month, category, and subscription across currencies.

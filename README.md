@@ -31,7 +31,13 @@ The menu bar can show your monthly total or your next payment. In Shortcuts, use
 
 ## Try Obolo
 
-Obolo is in development for **macOS 15 Sequoia or later**. You can build it from source using the instructions below and follow upcoming changes in the [changelog](CHANGELOG.md).
+Obolo runs on Apple silicon and Intel Macs with **macOS 15 Sequoia or later**. Download the disk image from the [latest release](https://github.com/anguria-studio/Obolo/releases/latest), open it, and drag **Obolo** into **Applications**.
+
+You can also install Obolo with Homebrew.
+
+```sh
+brew install --cask anguria-studio/tap/obolo
+```
 
 To explore an example, drop the [sample CSV](design/fixtures/sample.csv) onto the Obolo window. Review the rows in the import preview before adding them. In **Home**, select **Subscriptions** and click a name to see its renewal date and price history.
 
