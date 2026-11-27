@@ -48,7 +48,7 @@ Obolo saves your library on your Mac. It requires no Obolo account and collects 
 
 ## Development
 
-Building the app requires XcodeGen and Xcode with the macOS 26 SDK or later. On Sequoia, use Xcode 26.2 on macOS 15.6 or later. From the repository root, generate the project and open it in Xcode.
+Building the app requires XcodeGen and Xcode with the macOS 26 SDK or later. On Sequoia, use Xcode 26.3 on macOS 15.6 or later. From the repository root, generate the project and open it in Xcode.
 
 ```sh
 brew install xcodegen

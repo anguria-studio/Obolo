@@ -17,9 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Select Xcode 26 on macOS 15
+      - name: Select Xcode 26.3 on macOS 15
         if: matrix.os == 'macos-15'
-        run: sudo xcode-select --switch /Applications/Xcode_26.2.app/Contents/Developer
+        run: sudo xcode-select --switch /Applications/Xcode_26.3.app/Contents/Developer
 
       - name: Test Core
         run: swift test --package-path Core
