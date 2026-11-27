@@ -34,8 +34,8 @@ struct DayPicker: View {
     @State private var zoomingOut = true
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    /// Weekday row, its gap and six rows of days: the height every level keeps.
-    private static let gridAreaHeight: CGFloat = 14 + 10 + 6 * 30 + 5 * 4
+    /// Every level reserves 14pt for weekdays, a 10pt gap, six 30pt rows and five 4pt gaps.
+    private static let gridAreaHeight: CGFloat = 224
     private static let zoomCurve = Animation.timingCurve(0.32, 0.72, 0, 1, duration: 0.2)
     /// Year blocks start on years like 2016.
     private static let yearBlockOrigin = 2016
